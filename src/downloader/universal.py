@@ -1,7 +1,8 @@
 import subprocess
 from pathlib import Path
 from typing import Optional
-from ..utils.logger import logger
+
+from src.utils.logger import LoggerUtils
 
 
 def download_video(
@@ -18,12 +19,14 @@ def download_video(
         Returns:
             下载视频的完整路径
     """
+    logger = LoggerUtils().logger
+    logger.info(f"使用you-get下载视频: {url}")
     try:
         Path(output_dir).mkdir(parents=True, exist_ok=True)
         cmd = [
             "you-get",
             "--output-dir", output_dir,
-            "--no-caption", # 不下载字幕
+            "--no-caption",  # 不下载字幕
             url
         ]
 
@@ -56,5 +59,3 @@ def download_video(
     except subprocess.CalledProcessError as e:
         logger.error(f"下载失败：{e.output}")
         raise
-
-
